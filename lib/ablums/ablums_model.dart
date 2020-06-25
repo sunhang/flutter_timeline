@@ -1,6 +1,6 @@
 import 'package:tuple/tuple.dart';
 import 'package:intl/intl.dart';
-import 'package:fluttertimeline/ablums/timeline_ablums.dart';
+import 'package:fluttertimeline/ablums/ablums_widgets.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class AblumsList {

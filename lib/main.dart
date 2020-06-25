@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertimeline/ablums/ablums_model.dart';
-import 'package:fluttertimeline/ablums/data_source.dart';
-import 'package:fluttertimeline/ablums/timeline_ablums.dart';
+import 'package:fluttertimeline/ablums/ablums_datasource.dart';
+import 'package:fluttertimeline/ablums/ablums_widgets.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 void main() => runApp(MyApp());
