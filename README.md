@@ -5,5 +5,4 @@
 
 
 ![](ablums.gif)
-![](ablums1.png)
 
