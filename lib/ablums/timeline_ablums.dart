@@ -140,7 +140,7 @@ class _TimelineHeader extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               strDate,
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 16),
             ),
           ),
         ),

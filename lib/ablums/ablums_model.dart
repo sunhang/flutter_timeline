@@ -30,7 +30,7 @@ class AblumsList {
         }
 
         final timeStamp = oneDay.getEntity(index).timeStamp;
-        String date = format.format(DateTime.fromMillisecondsSinceEpoch(timeStamp));
+        String date = format.format(DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000));
         return Tuple2<bool, String>(true, date);
       }
     }
@@ -130,7 +130,7 @@ List<_OneDayRange> _buildOneDayRanges(List<PicEntity> list) {
 
   for (var i = 0; i < list.length; i++) {
     final entity = list[i];
-    final dtOfEntity = DateTime.fromMillisecondsSinceEpoch(entity.timeStamp);
+    final dtOfEntity = DateTime.fromMillisecondsSinceEpoch(entity.timeStamp * 1000);
 
     if (startDt.year == dtOfEntity.year &&
         startDt.month == dtOfEntity.month &&
