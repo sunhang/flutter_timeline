@@ -4,6 +4,6 @@
 [flutter_timeline/lib/ablums/](https://github.com/sunhang/flutter_timeline/tree/master/lib/ablums)
 
 
-![](https://github.com/sunhang/flutter_timeline/tree/master/ablums.gif)
+![](ablums.gif)
 ![](ablums1.png)
 
