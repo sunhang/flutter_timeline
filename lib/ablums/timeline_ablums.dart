@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertimeline/ablums/ablums_list.dart';
-import 'package:fluttertimeline/ablums/pic_entity.dart';
+import 'package:fluttertimeline/ablums/ablums_model.dart';
 
 const COLUMN_COUNT = 3;
 const TIMELINE_WIDTH_FLEX = 2;

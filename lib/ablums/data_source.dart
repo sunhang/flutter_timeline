@@ -1,8 +1,7 @@
 import 'dart:core';
 import 'package:flutter/foundation.dart';
-import 'package:fluttertimeline/ablums/pic_entity.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'ablums/ablums_list.dart';
+import 'ablums_model.dart';
 
 AblumsList _ablumsList;
 
