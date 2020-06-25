@@ -91,13 +91,15 @@ class _Image extends StatelessWidget {
 
     return FutureBuilder(
       future: _picEntity.assetEntity.file,
-      builder: (context, snapshot){
+      builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return SizedBox.shrink();
         }
 
-        return Image.file(snapshot.data,
-        fit: BoxFit.cover);
+        return Image.file(
+          snapshot.data,
+          fit: BoxFit.cover,
+        );
       },
     );
   }
@@ -183,7 +185,7 @@ class DotPainter extends CustomPainter {
 
     final circleRadius = rect.height / dotCount / 2 / 2;
     var offset = Offset(rect.width / 2, circleRadius * 2);
-    for (var i = 0; i < dotCount; i ++) {
+    for (var i = 0; i < dotCount; i++) {
       canvas.drawCircle(offset, circleRadius, paint);
       offset = offset.translate(0, circleRadius * 4);
     }
@@ -193,5 +195,4 @@ class DotPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
   }
-
 }
