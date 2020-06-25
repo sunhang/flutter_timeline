@@ -5,4 +5,5 @@
 
 
 ![](https://github.com/sunhang/flutter_timeline/tree/master/ablums.gif)
+![](ablums1.png)
 
