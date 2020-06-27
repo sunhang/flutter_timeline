@@ -7,6 +7,7 @@ const TIMELINE_WIDTH_FLEX = 2;
 const IMAGE_WIDTH_FLEX = 3;
 const DOT_COUNT = 8;
 
+/// 用时间线展示相册图片
 class TimelineAblums extends StatelessWidget {
   final AblumsList ablumsList;
 
@@ -57,27 +58,11 @@ class TimelineAblums extends StatelessWidget {
   }
 }
 
+/// 每一个图片
 class _Card extends StatelessWidget {
   final PicEntity _picEntity;
 
   _Card(PicEntity picEntity) : _picEntity = picEntity;
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: _Image(_picEntity),
-      ),
-    );
-  }
-}
-
-class _Image extends StatelessWidget {
-  final PicEntity _picEntity;
-
-  _Image(PicEntity picEntity) : _picEntity = picEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -89,22 +74,29 @@ class _Image extends StatelessWidget {
       return SizedBox.shrink();
     }
 
-    return FutureBuilder(
-      future: _picEntity.assetEntity.file,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return SizedBox.shrink();
-        }
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: FutureBuilder(
+          future: _picEntity.assetEntity.file,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return SizedBox.shrink();
+            }
 
-        return Image.file(
-          snapshot.data,
-          fit: BoxFit.cover,
-        );
-      },
+            return Image.file(
+              snapshot.data,
+              fit: BoxFit.cover,
+            );
+          },
+        ),
+      ),
     );
   }
 }
 
+/// 显示日期和很多小圆点
 class _TimelineWidget extends StatelessWidget {
   final Widget child;
 
@@ -127,6 +119,7 @@ class _TimelineWidget extends StatelessWidget {
   }
 }
 
+/// 显示日期
 class _TimelineHeader extends StatelessWidget {
   final String strDate;
 
@@ -157,6 +150,7 @@ class _TimelineHeader extends StatelessWidget {
   }
 }
 
+/// 显示小圆点
 class _TimelineDot extends StatelessWidget {
   final int dotCount;
 
@@ -165,15 +159,15 @@ class _TimelineDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: DotPainter(dotCount: dotCount),
+      painter: _DotPainter(dotCount: dotCount),
     );
   }
 }
 
-class DotPainter extends CustomPainter {
+class _DotPainter extends CustomPainter {
   final int dotCount;
 
-  DotPainter({this.dotCount});
+  _DotPainter({this.dotCount});
 
   /// 绘制多个圆点
   @override
