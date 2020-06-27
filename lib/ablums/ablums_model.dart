@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:fluttertimeline/ablums/ablums_widgets.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+/// 按天分组的相册图片列表
 class AblumsList {
   List<OneDay> oneDays;
   int visualSize;
@@ -30,7 +31,8 @@ class AblumsList {
         }
 
         final timeStamp = oneDay.getEntity(index).timeStamp;
-        String date = format.format(DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000));
+        String date = format
+            .format(DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000));
         return Tuple2<bool, String>(true, date);
       }
     }
@@ -41,6 +43,7 @@ class AblumsList {
 
 class PicEntity {
   final AssetEntity assetEntity;
+
   int get timeStamp => assetEntity.modifiedDateSecond;
 
   const PicEntity(this.assetEntity);
@@ -58,9 +61,9 @@ class OneDay {
 
   OneDay(
       {this.realStart,
-        this.realLength,
-        this.visualStartIndex,
-        List<PicEntity> baseList})
+      this.realLength,
+      this.visualStartIndex,
+      List<PicEntity> baseList})
       : _base = baseList;
 
   int get visualLength {
@@ -90,25 +93,72 @@ class OneDay {
   }
 }
 
-AblumsList buildAblumsList(List<PicEntity> list) {
-  final onedayRanges = _buildOneDayRanges(list);
+/// ablumslist的构造者
+class AblumsListBuilder {
+  final List<PicEntity> list;
 
-  final List<OneDay> oneDays = [];
-  var offset = 0;
-  for (var oneDayRange in onedayRanges) {
-    OneDay temp = OneDay(
-        realStart: oneDayRange._realStart,
-        realLength: oneDayRange._realLength,
-        visualStartIndex: offset,
-        baseList: list);
-    oneDays.add(temp);
+  AblumsListBuilder(this.list);
 
-    offset += temp.visualLength;
+  AblumsList build() {
+    final onedayRanges = _buildOneDayRanges(list);
+
+    final List<OneDay> oneDays = [];
+    var offset = 0;
+    for (var oneDayRange in onedayRanges) {
+      OneDay temp = OneDay(
+          realStart: oneDayRange._realStart,
+          realLength: oneDayRange._realLength,
+          visualStartIndex: offset,
+          baseList: list);
+      oneDays.add(temp);
+
+      offset += temp.visualLength;
+    }
+
+    final visualSize = offset;
+    final wrapper = AblumsList(oneDays, visualSize);
+    return wrapper;
   }
 
-  final visualSize = offset;
-  final wrapper = AblumsList(oneDays, visualSize);
-  return wrapper;
+  List<_OneDayRange> _buildOneDayRanges(List<PicEntity> list) {
+    var startDt = DateTime.fromMillisecondsSinceEpoch(0);
+
+    var realStart = -1;
+    var realLength = -1;
+
+    List<_OneDayRange> oneDayRanges = [];
+
+    /// 按天分组，取出来列表中一天开始和结束的偏移量
+    for (var i = 0; i < list.length; i++) {
+      final entity = list[i];
+      final dtOfEntity =
+          DateTime.fromMillisecondsSinceEpoch(entity.timeStamp * 1000);
+
+      if (startDt.year == dtOfEntity.year &&
+          startDt.month == dtOfEntity.month &&
+          startDt.day == dtOfEntity.day) {
+        realLength++;
+      } else {
+        if (realStart != -1) {
+          final oneDayRange =
+              _OneDayRange(realStart: realStart, realLength: realLength);
+          oneDayRanges.add(oneDayRange);
+        }
+
+        startDt = dtOfEntity;
+        realStart = i;
+        realLength = 1;
+      }
+    }
+
+    if (realStart != -1) {
+      final oneDayRange =
+          _OneDayRange(realStart: realStart, realLength: realLength);
+      oneDayRanges.add(oneDayRange);
+    }
+
+    return oneDayRanges;
+  }
 }
 
 class _OneDayRange {
@@ -118,42 +168,4 @@ class _OneDayRange {
   _OneDayRange({int realStart, int realLength})
       : _realStart = realStart,
         _realLength = realLength;
-}
-
-List<_OneDayRange> _buildOneDayRanges(List<PicEntity> list) {
-  var startDt = DateTime.fromMillisecondsSinceEpoch(0);
-
-  var realStart = -1;
-  var realLength = -1;
-
-  List<_OneDayRange> oneDayRanges = [];
-
-  for (var i = 0; i < list.length; i++) {
-    final entity = list[i];
-    final dtOfEntity = DateTime.fromMillisecondsSinceEpoch(entity.timeStamp * 1000);
-
-    if (startDt.year == dtOfEntity.year &&
-        startDt.month == dtOfEntity.month &&
-        startDt.day == dtOfEntity.day) {
-      realLength++;
-    } else {
-      if (realStart != -1) {
-        final oneDayRange =
-            _OneDayRange(realStart: realStart, realLength: realLength);
-        oneDayRanges.add(oneDayRange);
-      }
-
-      startDt = dtOfEntity;
-      realStart = i;
-      realLength = 1;
-    }
-  }
-
-  if (realStart != -1) {
-    final oneDayRange =
-        _OneDayRange(realStart: realStart, realLength: realLength);
-    oneDayRanges.add(oneDayRange);
-  }
-
-  return oneDayRanges;
 }

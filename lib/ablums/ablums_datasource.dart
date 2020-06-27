@@ -5,28 +5,30 @@ import 'ablums_model.dart';
 
 AblumsList _ablumsList;
 
+/// 获取相册数据
 Future<AblumsList> data() async {
   if (_ablumsList == null) {
-    List<AssetPathEntity> assetPathEntities =
-        await PhotoManager.getAssetPathList();
-    List<AssetEntity> assetEntities = await _assetEntities(assetPathEntities);
+    List<AssetEntity> assetEntities = await _assetEntities();
     _ablumsList = await compute(_getAblumsList, assetEntities);
   }
 
   return _ablumsList;
 }
 
+/// 一维的相册列表，转换成按天分组的结构
 AblumsList _getAblumsList(List<AssetEntity> assetEntities) {
   List<PicEntity> list = [];
   for (var e in assetEntities) {
     list.add(PicEntity(e));
   }
 
-  return buildAblumsList(list);
+  return AblumsListBuilder(list).build();
 }
 
-Future<List<AssetEntity>> _assetEntities(
-    List<AssetPathEntity> assetPathEntities) async {
+Future<List<AssetEntity>> _assetEntities() async {
+  List<AssetPathEntity> assetPathEntities =
+      await PhotoManager.getAssetPathList();
+
   List<AssetEntity> assetEntities = [];
   for (AssetPathEntity entity in assetPathEntities) {
     if (entity.name == "Screenshots" || entity.name == "DCIM") {
